@@ -136,9 +136,9 @@ def delectProducts(faces,gray,image):
     lipstickColorName = getcolor(getRgbStr(lipstick_color))
     foundationColorName = getcolor(getRgbStr(right_cheek_color))
     lenseColorName = getcolor(getRgbStr(right_eye_color))
-    products = 'lipstick - color' + lipstickColorName+ 'texture' +lipTexture+' right side cheek foundation - color' + foundationColorName
-    products+= 'left side cheel foundation - color' + getcolor(getRgbStr(left_cheek_color))+ 'right side eye lense - color' 
-    products+= lenseColorName + 'left side eye lesne - color' + getcolor(getRgbStr(left_eye_color))
+    products = 'lipstick - color' + lipstickColorName+ 'texture' +lipTexture
+    products+= 'cheek foundation - color' + foundationColorName
+    products+= 'eye lesne - color' + lenseColorName
     seph ="https://www.sephora.com/search?keyword="
     itemLinks = [
         {
