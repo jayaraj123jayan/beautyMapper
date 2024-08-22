@@ -13,6 +13,7 @@ from sklearn.cluster import KMeans
 import webcolors
 import json
 from types import SimpleNamespace
+import texture as texture
 
 
 from flask import Flask, request, jsonify, render_template
@@ -87,6 +88,14 @@ def display_clusters(image, labels, centers):
     segmented_image = centers[labels].reshape(image.shape)
     cv2.imshow("Segmented Image", cv2.cvtColor(segmented_image, cv2.COLOR_RGB2BGR))
     cv2.waitKey(0)
+def extractLips(image):
+    faces,gray = delectFaces(image)
+    face = faces[0]
+    landmarks = landmark_predictor(gray, face)
+    landmarks_points = [(p.x, p.y) for p in landmarks.parts()]
+    # Define points for lips (48-67)
+    lips_points = landmarks_points[48:67]
+    return extract_region(image, lips_points)
 
 def delectProducts(faces,gray,image):
   if len(faces) !=1 :
@@ -94,55 +103,59 @@ def delectProducts(faces,gray,image):
   
 
   for face in faces:
-      landmarks = landmark_predictor(gray, face)
-      landmarks_points = [(p.x, p.y) for p in landmarks.parts()]
+    landmarks = landmark_predictor(gray, face)
+    landmarks_points = [(p.x, p.y) for p in landmarks.parts()]
 
-      left_eye_points = landmarks_points[36:42]
-      left_eye_color = get_dominant_color(extract_region(image,left_eye_points))
+    left_eye_points = landmarks_points[36:42]
+    left_eye_color = get_dominant_color(extract_region(image,left_eye_points))
 
-    # Define points for right eye (42-47)
-      right_eye_points = landmarks_points[42:48]
-      right_eye_color = get_dominant_color(extract_region(image,right_eye_points))
+# Define points for right eye (42-47)
+    right_eye_points = landmarks_points[42:48]
+    right_eye_color = get_dominant_color(extract_region(image,right_eye_points))
 
-    # Define points for left cheek (approximate using points 1, 2, 3, 4, 31)
-      left_cheek_points = [landmarks_points[i] for i in [1, 2, 3, 4, 31]]
-      left_cheek_color = get_dominant_color(extract_region(image,left_cheek_points),)
+# Define points for left cheek (approximate using points 1, 2, 3, 4, 31)
+    left_cheek_points = [landmarks_points[i] for i in [1, 2, 3, 4, 31]]
+    left_cheek_color = get_dominant_color(extract_region(image,left_cheek_points),)
 
-    # Define points for right cheek (approximate using points 15, 14, 13, 12, 35)
-      right_cheek_points = [landmarks_points[i] for i in [15, 14, 13, 12, 35]]
-      right_cheek_color = get_dominant_color(extract_region(image,right_cheek_points))
+# Define points for right cheek (approximate using points 15, 14, 13, 12, 35)
+    right_cheek_points = [landmarks_points[i] for i in [15, 14, 13, 12, 35]]
+    right_cheek_color = get_dominant_color(extract_region(image,right_cheek_points))
 
-      # Define points for lips (48-67)
-      lips_points = landmarks_points[48:67]
-      lips_image = extract_region(image, lips_points)
+    # Define points for lips (48-67)
+    lips_points = landmarks_points[48:67]
+    lips_image = extract_region(image, lips_points)
+    print('getting lipstick texture')
+    lipTexture = texture.predict_texture(lips_image)
+    # lipTexture = ""
+    print('lipstick texture' + lipTexture)
 
-      # Get the predominant color of the lips
-      lipstick_color = get_dominant_color(lips_image)
-      # color_name = closest_color(dominant_color)
-      # print("Lipstick color:" getRgbStr(lipstick_color))
-      lipstickColorName = getcolor(getRgbStr(lipstick_color))
-      foundationColorName = getcolor(getRgbStr(right_cheek_color))
-      lenseColorName = getcolor(getRgbStr(right_eye_color))
-      products = 'lipstick - color' + lipstickColorName+ 'right side cheek foundation - color' + foundationColorName
-      products+= 'left side cheel foundation - color' + getcolor(getRgbStr(left_cheek_color))+ 'right side eye lense - color' 
-      products+= lenseColorName + 'left side eye lesne - color' + getcolor(getRgbStr(left_eye_color))
-      seph ="https://www.sephora.com/search?keyword="
-      itemLinks = [
-          {
-              "name": "lipstick",
-              "link" : seph+ "lipstick"+ lipstickColorName
-              
-          },
-          {
-              "name": "Foundation",
-              "link" : seph+ "Foundation"+ foundationColorName
-          },
-          {
-              "name": "Lense",
-              "link" : seph+ "EyeLens"+ lenseColorName
-          }
-      ]
-      return products ,itemLinks
+    # Get the predominant color of the lips
+    lipstick_color = get_dominant_color(lips_image)
+    # color_name = closest_color(dominant_color)
+    # print("Lipstick color:" getRgbStr(lipstick_color))
+    lipstickColorName = getcolor(getRgbStr(lipstick_color))
+    foundationColorName = getcolor(getRgbStr(right_cheek_color))
+    lenseColorName = getcolor(getRgbStr(right_eye_color))
+    products = 'lipstick - color' + lipstickColorName+ 'texture' +lipTexture+' right side cheek foundation - color' + foundationColorName
+    products+= 'left side cheel foundation - color' + getcolor(getRgbStr(left_cheek_color))+ 'right side eye lense - color' 
+    products+= lenseColorName + 'left side eye lesne - color' + getcolor(getRgbStr(left_eye_color))
+    seph ="https://www.sephora.com/search?keyword="
+    itemLinks = [
+        {
+            "name": "lipstick",
+            "link" : seph+ "lipstick"+ lipstickColorName  +lipTexture
+            
+        },
+        {
+            "name": "Foundation",
+            "link" : seph+ "Foundation"+ foundationColorName
+        },
+        {
+            "name": "Lense",
+            "link" : seph+ "EyeLens"+ lenseColorName
+        }
+    ]
+    return products ,itemLinks
 
 def getRgbStr (color) :
     color = color.tolist()
@@ -152,8 +165,26 @@ def getRgbStr (color) :
 
 app = Flask(__name__)
 
+def resize_image_aspect_ratio(image, target_width):
+    # Get the original dimensions
+    (h, w) = image.shape[:2]
+    
+    # Calculate the aspect ratio
+    aspect_ratio = w / h
+    
+    # Calculate the new dimensions
+    new_width = target_width
+    new_height = int(new_width / aspect_ratio)
+    
+    # Resize the image
+    resized_image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
+    
+    return resized_image
+
+
 @app.route('/upload', methods=['POST'])
 def predict_image():
+    print("received image")
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
 
@@ -170,17 +201,20 @@ def predict_image():
         os.makedirs('uploads', exist_ok=True)
         file_path = os.path.join('uploads', filename)
         file.save(file_path)
-
-        img = cv2.imread("uploads/" + filename)
+        print("saved image")
+        img = resize_image_aspect_ratio(cv2.imread("uploads/" + filename),400)
+        print("resized")
         faces,gray = delectFaces(img)
+        print("face detected")
         # return delectLips(faces,gray,img).tolist()
         #return jsonify(result)
         products, itms = delectProducts(faces,gray,img);
+        print("products detected")
         return genInstGoogle(products, itms)
-# AIzaSyDIOebhvsoqizCwOiWHp4KaCxKXnzWpf78
+apiKey = 'AIzaSyCakukvTpn88bVTGJhD_SNplALWNq-C6Uc'
 def genInstGoogle(text, itms):
     text = "Please provide instructions(in less than 128 words) to apply following makeup products to my face. Start with the peparation of skin. ignore the rgb color . products are "+ text 
-    url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDIOebhvsoqizCwOiWHp4KaCxKXnzWpf78'
+    url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' + apiKey
     data='{"contents":[{"parts":[{"text": "'+text+'"}]}]}'
     # print(data)
     response = requests.post(url,data=data, stream=True)
@@ -192,10 +226,11 @@ def genInstGoogle(text, itms):
     }
 def getcolor(rgb):
     text = "decode this rgb code to closest color name (respond woth the color only)"+ rgb 
-    url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDIOebhvsoqizCwOiWHp4KaCxKXnzWpf78'
+    url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' + apiKey
     data='{"contents":[{"parts":[{"text": "'+text+'"}]}]}'
     # print(data)
     response = requests.post(url,data=data, stream=True)
+    # print(jsonToObj(response.content.decode("utf-8")))
     return jsonToObj(response.content.decode("utf-8")).candidates[0].content.parts[0].text
 def jsonToObj(str) :
     return json.loads(str, object_hook=lambda d: SimpleNamespace(**d))

@@ -14,9 +14,9 @@
         <label for="file">Choose an image:</label>
         <input type="file" id="file" name="file" accept="image/png, image/gif, image/jpeg" required>
         <br><br>
+        <img id="preview" src="#" alt="Image Preview" style="display:none;max-width: 100%;">
         <input type="submit" value="Upload">
     </form>
-    <img id="preview" src="#" alt="Image Preview" style="display:none;max-width: 100%;">
     <p id="loading" style="margin-top: 20px; display: none;">Loading...</p>
     <div id="result" style="margin-top: 20px; display: none; overflow-x: scroll; max-width: 720px;">
         <h2>Result</h2>
@@ -58,6 +58,7 @@
                     $('#loading').hide();
                     if (data.instructions && data.products) {
                         $('#resultContent').text(data.instructions);
+                        $("#products_result").html("")
                         data.products.forEach(i=>{
                             $("#products_result").append('<p>Buy this  <a href="'+i.link+'" target="_blank">'+i.name+'</a>.</p>')
                         })
