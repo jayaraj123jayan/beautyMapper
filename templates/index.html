@@ -1,43 +1,297 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beauty Mapper</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* styles.css */
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #c4bce9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: #ffffff;
+            /* Pastel pink */
+            padding: 15px;
+            color: #333;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+            position: relative;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            /* align-items: center; */
+            justify-content: space-between;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ff9aa2;
+            /* Lighter pastel pink */
+        }
+
+        /* Hamburger Menu */
+        .hamburger-menu {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Hide navigation on mobile */
+        .nav-active {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background-color: #cacdff;
+            /* Same as nav background */
+            width: calc(100% - 40px);
+            text-align: right;
+            padding: 10px 20px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        /* .nav-links li {
+            margin: 10px 0;
+        } */
+
+        /* Responsive Nav Bar */
+        @media (max-width: 768px) {
+            .hamburger-menu {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 60px;
+                right: 20px;
+                background-color: #ffcad4;
+                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+                padding: 20px;
+                border-radius: 10px;
+            }
+
+            .nav-links li {
+                margin-left: 0;
+                margin-top: 10px;
+                width: 100%;
+                text-align: right;
+            }
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            padding: 20px;
+        }
+
+        .container2 {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h3 {
+            color: #636363;
+            font-size: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #636363;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin: 0 auto;
+            padding: 10px;
+            border: 1px solid #d3d3d3;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 300px;
+            font-size: 16px;
+            background-color: #f0f0f0;
+        }
+
+        input[type="submit"] {
+            background-color: #a8e6cf;
+            /* Pastel mint */
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #dcedc1;
+            /* Lighter pastel mint */
+        }
+
+        #loading {
+            font-size: 18px;
+            color: #ffb6b9;
+            /* Pastel coral */
+        }
+
+        #result h2 {
+            font-size: 22px;
+            color: #636363;
+            margin-bottom: 10px;
+        }
+
+        #resultContent,
+        #products_result p {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #636363;
+        }
+
+        #products_result a {
+            color: #ffb6b9;
+            /* Pastel coral */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #products_result a:hover {
+            text-decoration: underline;
+        }
+
+        img#preview {
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Form */
+        @media (max-width: 768px) {
+            .container2 {
+                padding: 20px;
+            }
+
+            h3 {
+                font-size: 16px;
+            }
+
+            label,
+            input[type="file"],
+            input[type="submit"],
+            #result h2 {
+                font-size: 14px;
+            }
+
+            #loading,
+            #resultContent,
+            #products_result p {
+                font-size: 14px;
+            }
+        }
+
+        .upload-button {
+            position: relative;
+            display: inline-block;
+        }
+
+        .upload-button input[type="file"] {
+            display: none;
+        }
+
+        .upload-button label {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 50px;
+            /* Makes the button round */
+            background-color: #4CAF50;
+            /* Custom background color */
+            color: white;
+            font-size: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-button label:hover {
+            background-color: #45a049;
+            /* Darker shade on hover */
+        }
+    </style>
 </head>
+
 <body>
-    <div style="text-align: center; width: 100%; max-width: 720px;">
-    <h1>Beauty Mapper</h1>
-    <h3>Upload an image below to get the products and makeup instuctions.(image should have one and only one face)</h3>
-    <form id="uploadForm">
-        <label for="file">Choose an image:</label>
-        <input type="file" id="file" name="file" accept="image/png, image/gif, image/jpeg" required>
-        <br><br>
-        <img id="preview" src="#" alt="Image Preview" style="display:none;max-width: 100%;">
-        <input type="submit" value="Upload">
-    </form>
-    <p id="loading" style="margin-top: 20px; display: none;">Loading...</p>
-    <div id="result" style="margin-top: 20px; display: none; overflow-x: scroll; max-width: 720px;">
-        <h2>Result</h2>
-        <pre id="products_result"></pre>
-        <pre id="resultContent"></pre>
-    </div>
-</div>
     <script>
         $(document).ready(function () {
+            $('#hamburger-menu').click(function () {
+                $('#nav-links').toggleClass('nav-active');
+            });
+
+            $(window).resize(function () {
+                if ($(window).width() > 768) {
+                    $('#nav-links').removeClass('nav-active');
+                }
+            });
+
             function readURL(input) {
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
-                    
+
                     reader.onload = function (e) {
                         $('#preview').attr('src', e.target.result).show();
                     }
-                    
+
                     reader.readAsDataURL(input.files[0]);
                 }
             }
-            
+
             $("#file").change(function () {
                 readURL(this);
             });
@@ -53,28 +307,67 @@
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.json())
-                .then(data => {
-                    $('#loading').hide();
-                    if (data.instructions && data.products) {
-                        $('#resultContent').text(data.instructions);
-                        $("#products_result").html("")
-                        data.products.forEach(i=>{
-                            $("#products_result").append('<p>Buy this  <a href="'+i.link+'" target="_blank">'+i.name+'</a>.</p>')
-                        })
-                        
-                    } else {
-                        $('#resultContent').text('Unexpected response format');
-                    }
-                    $('#result').show();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    $('#resultContent').text('An error occurred: ' + error.message);
-                    $('#result').show();
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        $('#loading').hide();
+                        if (data.instructions && data.products) {
+                            $('#resultContent').text(data.instructions);
+                            $("#products_result").html("")
+                            data.products.forEach(i => {
+                                $("#products_result").append('<p>Buy this  <a href="' + i.link + '" target="_blank">' + i.name + '</a>.</p>')
+                            })
+
+                        } else {
+                            $('#resultContent').text('Unexpected response format');
+                        }
+                        $('#result').show();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        $('#resultContent').text('An error occurred: ' + error.message);
+                        $('#result').show();
+                    });
             });
         });
     </script>
+    <nav>
+        <div class="nav-container">
+            <h2>Beauty Mapper</h2>
+            <div class="hamburger-menu" id="hamburger-menu">
+                &#9776;
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Tutorials</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="container2">
+            <h3>Upload an image below to get the products and makeup instructions. (Image should have one and only one
+                face)</h3>
+            <form id="uploadForm">
+                <div class="upload-button">
+                    <input type="file" id="file" name="file" accept="image/png, image/gif, image/jpeg" required>
+                    <label for="file"><i class="fas fa-upload"></i></label>
+                </div>
+                <br><br>
+                <div style="width: 100%;">
+                    <img id="preview" src="#" alt="Image Preview" style="display:none;max-width: 100%;">
+
+                </div>
+                <input type="submit" value="Upload">
+            </form>
+            <p id="loading" style="margin-top: 20px; display: none;">Loading...</p>
+            <div id="result" style="margin-top: 20px; display: none; overflow-x: scroll; max-width: 720px;">
+                <h2>Result</h2>
+                <pre id="products_result"></pre>
+                <pre id="resultContent"></pre>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
