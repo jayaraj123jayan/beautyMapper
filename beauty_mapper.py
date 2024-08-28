@@ -10,7 +10,6 @@ import cv2
 import numpy as np
 import os
 from sklearn.cluster import KMeans
-import webcolors
 import json
 from types import SimpleNamespace
 import texture as texture
@@ -19,10 +18,7 @@ import texture as texture
 from flask import Flask, request, jsonify, render_template
 from werkzeug.utils import secure_filename
 import os
-import io
-from PIL import Image
 import numpy as np
-import matplotlib.pyplot as plt
 import requests
 
 predictor_path = "shape_predictor_68_face_landmarks.dat"
