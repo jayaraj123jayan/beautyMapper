@@ -8,6 +8,7 @@ RUN apt-get update && \
     cmake \
     libopenblas-dev \
     liblapack-dev \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
