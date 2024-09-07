@@ -138,7 +138,7 @@ def delectProducts(faces,gray,image):
     seph ="https://www.sephora.com/search?keyword="
     itemLinks = [
         {
-            "name": "lipstick",
+            "name": "Lipstick",
             "link" : seph+ "lipstick"+ lipstickColorName  +lipTexture
             
         },
@@ -147,8 +147,8 @@ def delectProducts(faces,gray,image):
             "link" : seph+ "Foundation"+ foundationColorName
         },
         {
-            "name": "Lense",
-            "link" : seph+ "EyeLens"+ lenseColorName
+            "name": "Eye Liner",
+            "link" : seph+ "EyeLiner"+ lenseColorName
         }
     ]
     return products ,itemLinks
