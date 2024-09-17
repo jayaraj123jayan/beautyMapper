@@ -1,69 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Beauty Mapper</title>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap"
-        rel="stylesheet"
-        />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap" rel="stylesheet">
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-        />
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
-    </head>
-    <body>
-        <div class="container">
-            <div class="upload-wrapper">
-                <h1 class="title">Beauty Mapper</h1>
-                <div class="upload-area">
-                    <i class="fa-solid fa-image" id="dummy-preview"></i>
-                      <img
-                    id="preview"
-                    src=""
-                    alt="Image preview"
-                    class="uploaded-image"
-                    style="display: none"
-                    />
-                    <form id="uploadForm">
 
-                        <div class="text-wrapper">
-                            <p>Drag and drop images /</p>
-                            <label for="file-upload" class="upload-text">
-                                Choose file
-                            </label>
-                            <input
-                            type="file"
-                            id="file-upload"
-                            accept="image/png, image/gif, image/jpeg"
-                            required
-                            class="input-upload"
-                            onchange="handleFileChange(event)"
-                            />
-                        </div>
-                        <div class="guideline-wrapper">
-                            <h5>Guidelines</h5>
-                            <p>* Please ensure that the image contains only one face.</p>
-                            <p>* The image should be clear and well-lit.</p>
-                            <p>* Accepted file formats are JPEG, PNG, and GIF.</p>
-                            <p>* The image should be at least 500x500 pixels. Larger images are preferred for better quality.</p>
-                        </div>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beauty Mapper</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="upload-wrapper">
+            <h1 class="title">Beauty Mapper</h1>
+            <div class="upload-area">
+                <i class="fa-solid fa-image" id="dummy-preview"></i>
+                <img id="preview" src="" alt="Image preview" class="uploaded-image" style="display: none" />
+                <form id="uploadForm">
+
+                    <div class="text-wrapper">
+                        <p>Drag and drop images /</p>
+                        <label for="file-upload" class="upload-text">
+                            Choose file
+                        </label>
+                        <input type="file" id="file-upload" accept="image/png, image/gif, image/jpeg" required
+                            class="input-upload" onchange="handleFileChange(event)" />
                     </div>
-                  
-                <input
-                type="submit"
-                value="Generate result"
-                class="submit-button"
-                />
-            </form>
+                    <div class="guideline-wrapper">
+                        <h5>Guidelines</h5>
+                        <p>* Please ensure that the image contains only one face.</p>
+                        <p>* The image should be clear and well-lit.</p>
+                        <p>* Accepted file formats are JPEG, PNG, and GIF.</p>
+                        <p>* The image should be at least 500x500 pixels. Larger images are preferred for better
+                            quality.</p>
+                    </div>
             </div>
-            <div class="result-wrapper">
-                <div id="result-section">
+
+            <input type="submit" value="Generate result" class="submit-button" />
+            </form>
+        </div>
+        <div class="result-wrapper">
+            <div id="result-section" class="result-section-details">
                     <div class="result-section">
                         <div>
                             <h2>Step 1</h2>
@@ -88,22 +69,16 @@
             </div>
                 <div id="loading" style="display: none;">
                 </div>
-                <div
-                id="result"
-                style="
-                    margin-top: 20px;
-                    display: none;
-                    overflow-x: scroll;
-                    max-width: 720px;
-                "
-            >
-                <h2>Result</h2>
-                <pre id="products_result"></pre>
-                <pre id="resultContent"></pre>
-            </div> 
+            <div id="result" style="display: none;">
+                <h2>Results for Your Image</h2>
+                <p>Based on our analysis, we’ve identified the following products that match your image:</p>
+                <div id="products_result"></div>
+                <p id="resultContent"></p>
             </div>
-            
         </div>
-        <script src="{{ url_for('static', filename='script.js') }}"></script>
-    </body>
+
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
 </html>
