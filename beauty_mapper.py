@@ -159,7 +159,7 @@ def getRgbStr (color) :
 
 # !set NGROK_AUTHTOKEN=2KRH4rvDLeAgu8wjsLZCIO6bo89_6zu9ewBupf1ZtSrAY13TC
 
-app = Flask(__name__)
+app = Flask(__name__,static_folder="static")
 
 def resize_image_aspect_ratio(image, target_width):
     # Get the original dimensions
