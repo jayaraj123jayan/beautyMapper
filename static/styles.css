@@ -13,13 +13,13 @@ body {
     width: 100vw;
 }
 
-/* Main Container */
 .container {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     height: 100%;
     width: 100%;
+    overflow-x: hidden;
 }
 
 .upload-wrapper {
@@ -90,7 +90,6 @@ body {
 
 .text-wrapper {
     display: flex;
-    /* flex-direction: column; */
     align-items: center;
     justify-content: center;
     gap: 4px;
@@ -112,7 +111,6 @@ body {
 .result-wrapper > div {
     display: flex;
     flex-direction: column;
-    gap: 48px;
 }
 
 .submit-button {
@@ -128,6 +126,12 @@ body {
     cursor: pointer;
     font-family: poppins;
     margin-top: auto;
+}
+
+.result-section-details {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
 }
 
 .result-section {
@@ -167,4 +171,62 @@ body {
     border-left-color: #eaeff7;
     animation: spinner 800ms linear infinite;
     margin-inline: auto;
+}
+
+#result {
+    display: none;
+}
+
+#result > h2 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #384b70;
+    margin-bottom: 16px;
+}
+
+#result > p {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+#products_result {
+    margin-top: 16px;
+}
+
+#products_result > ul > li {
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 12px;
+}
+
+#products_result > ul > li > a {
+    font-size: 13px;
+    font-weight: 400;
+    font-style: italic;
+}
+
+#resultContent {
+    margin-top: 32px;
+}
+
+#resultContent ol {
+    list-style-type: none;
+    counter-reset: item;
+    padding: 0;
+}
+#resultContent li {
+    counter-increment: item;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+}
+#resultContent li:last-child {
+    border-bottom: none;
+}
+#resultContent li::before {
+    content: counter(item) ". ";
+    font-weight: bold;
+}
+#resultContent strong {
+    color: #333;
 }
