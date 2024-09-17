@@ -139,16 +139,16 @@ def delectProducts(faces,gray,image):
     itemLinks = [
         {
             "name": "Lipstick",
-            "link" : seph+ "lipstick"+ lipstickColorName  +lipTexture
+            "link" : seph+ "lipstick "+ lipstickColorName  +lipTexture
             
         },
         {
             "name": "Foundation",
-            "link" : seph+ "Foundation"+ foundationColorName
+            "link" : seph+ "Foundation "+ foundationColorName
         },
         {
             "name": "Eye Liner",
-            "link" : seph+ "EyeLiner"+ lenseColorName
+            "link" : seph+ "EyeLiner "+ lenseColorName
         }
     ]
     return products ,itemLinks
