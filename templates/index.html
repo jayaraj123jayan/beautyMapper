@@ -2,372 +2,83 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Beauty Mapper</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* styles.css */
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #c4bce9;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-
-        /* Navigation Bar */
-        nav {
-            background-color: #ffffff;
-            /* Pastel pink */
-            padding: 15px;
-            color: #333;
-            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 10px;
-            position: relative;
-        }
-
-        .nav-links {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            /* align-items: center; */
-            justify-content: space-between;
-        }
-
-        .nav-links li {
-            margin-left: 20px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: #ff9aa2;
-            /* Lighter pastel pink */
-        }
-
-        /* Hamburger Menu */
-        .hamburger-menu {
-            display: none;
-            font-size: 24px;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        /* Hide navigation on mobile */
-        .nav-active {
-            display: flex;
-            flex-direction: column;
-            position: absolute;
-            top: 60px;
-            right: 20px;
-            background-color: #cacdff;
-            /* Same as nav background */
-            width: calc(100% - 40px);
-            text-align: right;
-            padding: 10px 20px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-        }
-
-        /* .nav-links li {
-            margin: 10px 0;
-        } */
-
-        /* Responsive Nav Bar */
-        @media (max-width: 768px) {
-            .hamburger-menu {
-                display: block;
-            }
-
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                position: absolute;
-                top: 60px;
-                right: 20px;
-                background-color: #ffcad4;
-                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-                padding: 20px;
-                border-radius: 10px;
-            }
-
-            .nav-links li {
-                margin-left: 0;
-                margin-top: 10px;
-                width: 100%;
-                text-align: right;
-            }
-        }
-
-        /* Main Container */
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 80vh;
-            padding: 20px;
-        }
-
-        .container2 {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-            max-width: 700px;
-            width: 100%;
-            text-align: center;
-        }
-
-        h3 {
-            color: #636363;
-            font-size: 18px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: #636363;
-        }
-
-        input[type="file"] {
-            display: block;
-            margin: 0 auto;
-            padding: 10px;
-            border: 1px solid #d3d3d3;
-            border-radius: 5px;
-            width: 100%;
-            max-width: 300px;
-            font-size: 16px;
-            background-color: #f0f0f0;
-        }
-
-        input[type="submit"] {
-            background-color: #a8e6cf;
-            /* Pastel mint */
-            color: #333;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #dcedc1;
-            /* Lighter pastel mint */
-        }
-
-        #loading {
-            font-size: 18px;
-            color: #ffb6b9;
-            /* Pastel coral */
-        }
-
-        #result h2 {
-            font-size: 22px;
-            color: #636363;
-            margin-bottom: 10px;
-        }
-
-        #resultContent,
-        #products_result p {
-            font-size: 16px;
-            line-height: 1.5;
-            color: #636363;
-        }
-
-        #products_result a {
-            color: #ffb6b9;
-            /* Pastel coral */
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        #products_result a:hover {
-            text-decoration: underline;
-        }
-
-        img#preview {
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Responsive Form */
-        @media (max-width: 768px) {
-            .container2 {
-                padding: 20px;
-            }
-
-            h3 {
-                font-size: 16px;
-            }
-
-            label,
-            input[type="file"],
-            input[type="submit"],
-            #result h2 {
-                font-size: 14px;
-            }
-
-            #loading,
-            #resultContent,
-            #products_result p {
-                font-size: 14px;
-            }
-        }
-
-        .upload-button {
-            position: relative;
-            display: inline-block;
-        }
-
-        .upload-button input[type="file"] {
-            display: none;
-        }
-
-        .upload-button label {
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 50px;
-            /* Makes the button round */
-            background-color: #4CAF50;
-            /* Custom background color */
-            color: white;
-            font-size: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .upload-button label:hover {
-            background-color: #45a049;
-            /* Darker shade on hover */
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
 </head>
 
 <body>
-    <script>
-        $(document).ready(function () {
-            $('#hamburger-menu').click(function () {
-                $('#nav-links').toggleClass('nav-active');
-            });
-
-            $(window).resize(function () {
-                if ($(window).width() > 768) {
-                    $('#nav-links').removeClass('nav-active');
-                }
-            });
-
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        $('#preview').attr('src', e.target.result).show();
-                    }
-
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-
-            $("#file").change(function () {
-                readURL(this);
-            });
-
-            $('#uploadForm').on('submit', function (e) {
-                e.preventDefault();
-                $('#loading').show();
-                let formData = new FormData();
-                let fileInput = $('#file')[0].files[0];
-                formData.append('file', fileInput);
-
-                fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        $('#loading').hide();
-                        if (data.instructions && data.products) {
-                            $('#resultContent').text(data.instructions);
-                            $("#products_result").html("")
-                            data.products.forEach(i => {
-                                $("#products_result").append('<p>Buy this  <a href="' + i.link + '" target="_blank">' + i.name + '</a>.</p>')
-                            })
-
-                        } else {
-                            $('#resultContent').text('Unexpected response format');
-                        }
-                        $('#result').show();
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        $('#resultContent').text('An error occurred: ' + error.message);
-                        $('#result').show();
-                    });
-            });
-        });
-    </script>
-    <nav>
-        <div class="nav-container">
-            <h2>Beauty Mapper</h2>
-            <div class="hamburger-menu" id="hamburger-menu">
-                &#9776;
-            </div>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">Tutorials</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
     <div class="container">
-        <div class="container2">
-            <h3>Upload an image below to get the products and makeup instructions. (Image should have one and only one
-                face)</h3>
-            <form id="uploadForm">
-                <div class="upload-button">
-                    <input type="file" id="file" name="file" accept="image/png, image/gif, image/jpeg" required>
-                    <label for="file"><i class="fas fa-upload"></i></label>
-                </div>
-                <br><br>
-                <div style="width: 100%;">
-                    <img id="preview" src="#" alt="Image Preview" style="display:none;max-width: 100%;">
+        <div class="upload-wrapper">
+            <h1 class="title">Beauty Mapper</h1>
+            <div class="upload-area">
+                <i class="fa-solid fa-image" id="dummy-preview"></i>
+                <img id="preview" src="" alt="Image preview" class="uploaded-image" style="display: none" />
+                <form id="uploadForm">
 
-                </div>
-                <input type="submit" value="Upload">
+                    <div class="text-wrapper">
+                        <p>Drag and drop images /</p>
+                        <label for="file-upload" class="upload-text">
+                            Choose file
+                        </label>
+                        <input type="file" id="file-upload" accept="image/png, image/gif, image/jpeg" required
+                            class="input-upload" onchange="handleFileChange(event)" />
+                    </div>
+                    <div class="guideline-wrapper">
+                        <h5>Guidelines</h5>
+                        <p>* Please ensure that the image contains only one face.</p>
+                        <p>* The image should be clear and well-lit.</p>
+                        <p>* Accepted file formats are JPEG, PNG, and GIF.</p>
+                        <p>* The image should be at least 500x500 pixels. Larger images are preferred for better
+                            quality.</p>
+                    </div>
+            </div>
+
+            <input type="submit" value="Generate result" class="submit-button" />
             </form>
-            <p id="loading" style="margin-top: 20px; display: none;">Loading...</p>
-            <div id="result" style="margin-top: 20px; display: none; overflow-x: scroll; max-width: 720px;">
-                <h2>Result</h2>
-                <pre id="products_result"></pre>
-                <pre id="resultContent"></pre>
+        </div>
+        <div class="result-wrapper">
+            <div id="result-section" class="result-section-details">
+                    <div class="result-section">
+                        <div>
+                            <h2>Step 1</h2>
+                            <h6>Select the image from your device that you want to analyze.</h6>
+                        </div>
+                        <img src="{{ url_for('static', filename='assets/step1.svg') }}" width="190px"/>
+                    </div>
+                    <div class="result-section">
+                        <div>
+                        <h2>Step 2</h2>
+                        <h6>Wait for a few moments while our system processes the image and identifies the products.</h6>
+                    </div>
+                    <img src="{{ url_for('static', filename='assets/step2.svg') }}" width="190px"/>
+                </div>
+                <div class="result-section">
+                    <div>
+                        <h2>Step 3</h2>
+                        <h6>Enjoy discovering and using your desired makeup products!</h6>
+                    </div>
+                    <img src="{{ url_for('static', filename='assets/step3.svg') }}" width="190px" height="130px"/>
+                </div>
+            </div>
+                <div id="loading" style="display: none;">
+                </div>
+            <div id="result" style="display: none;">
+                <h2>Results for Your Image</h2>
+                <p>Based on our analysis, we’ve identified the following products that match your image:</p>
+                <div id="products_result"></div>
+                <p id="resultContent"></p>
             </div>
         </div>
+
     </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 
 </html>
